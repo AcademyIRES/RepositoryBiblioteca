@@ -1,0 +1,188 @@
+USE [Biblioteca]
+GO
+/****** Object:  Table [dbo].[Autore]    Script Date: 26/10/2021 14:09:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Autore](
+	[IdAutore] [int] IDENTITY(1,1) NOT NULL,
+	[Nome] [varchar](50) NOT NULL,
+	[Cognome] [varchar](50) NOT NULL,
+	[Nazionalità] [varchar](50) NOT NULL,
+	[Cancellato] [bit] NULL,
+ CONSTRAINT [PK_Autore] PRIMARY KEY CLUSTERED 
+(
+	[IdAutore] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CasaProduzione]    Script Date: 26/10/2021 14:09:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CasaProduzione](
+	[IdCasaProduzione] [int] IDENTITY(1,1) NOT NULL,
+	[Nome] [varchar](50) NOT NULL,
+	[Nazionalità] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_CasaProduzione] PRIMARY KEY CLUSTERED 
+(
+	[IdCasaProduzione] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Categorie]    Script Date: 26/10/2021 14:09:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categorie](
+	[IdCategoria] [int] IDENTITY(1,1) NOT NULL,
+	[Nome] [varchar](50) NOT NULL,
+	[Cancellato] [bit] NOT NULL,
+ CONSTRAINT [PK_Categorie] PRIMARY KEY CLUSTERED 
+(
+	[IdCategoria] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Impiegati]    Script Date: 26/10/2021 14:09:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Impiegati](
+	[IdImpiegato] [int] IDENTITY(1,1) NOT NULL,
+	[Nome] [varchar](50) NOT NULL,
+	[Cognome] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Impiegati] PRIMARY KEY CLUSTERED 
+(
+	[IdImpiegato] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Oggetti]    Script Date: 26/10/2021 14:09:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Oggetti](
+	[IdOggetto] [int] IDENTITY(1,1) NOT NULL,
+	[Titolo] [varchar](100) NOT NULL,
+	[IdCategoria] [int] NOT NULL,
+	[IdCasaProduzione] [int] NOT NULL,
+	[DataUscita] [datetime] NOT NULL,
+	[IdAutore] [int] NULL,
+	[IdRegista] [int] NULL,
+	[IdTipologiaOggetto] [int] NOT NULL,
+ CONSTRAINT [PK_Riviste] PRIMARY KEY CLUSTERED 
+(
+	[IdOggetto] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Prestiti]    Script Date: 26/10/2021 14:09:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Prestiti](
+	[IdPrestito] [int] IDENTITY(1,1) NOT NULL,
+	[DataInizio] [datetime] NOT NULL,
+	[DataFine] [datetime] NOT NULL,
+	[IdUtente] [int] NOT NULL,
+	[IdImpiegatoPrestito] [int] NOT NULL,
+	[IdImpiegatoRestituzione] [int] NOT NULL,
+	[IdOggetto] [int] NOT NULL,
+ CONSTRAINT [PK_Prestiti] PRIMARY KEY CLUSTERED 
+(
+	[IdPrestito] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Regista]    Script Date: 26/10/2021 14:09:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Regista](
+	[IdRegista] [int] IDENTITY(1,1) NOT NULL,
+	[Nome] [varchar](50) NOT NULL,
+	[Cognome] [varchar](50) NOT NULL,
+	[Nazionalità] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Regista] PRIMARY KEY CLUSTERED 
+(
+	[IdRegista] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TipologiaOggetto]    Script Date: 26/10/2021 14:09:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TipologiaOggetto](
+	[IdTipologiaOggetto] [int] IDENTITY(1,1) NOT NULL,
+	[Descrizione] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_Entity] PRIMARY KEY CLUSTERED 
+(
+	[IdTipologiaOggetto] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Utenti]    Script Date: 26/10/2021 14:09:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Utenti](
+	[IdUtente] [int] IDENTITY(1,1) NOT NULL,
+	[Nome] [varchar](50) NOT NULL,
+	[Cognome] [varchar](50) NOT NULL,
+	[NumTelefono] [varchar](20) NOT NULL,
+ CONSTRAINT [PK_Utenti] PRIMARY KEY CLUSTERED 
+(
+	[IdUtente] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Autore] ADD  CONSTRAINT [DF_Autore_Cancellato]  DEFAULT ((0)) FOR [Cancellato]
+GO
+ALTER TABLE [dbo].[Categorie] ADD  CONSTRAINT [DF_Categorie_Cancellato]  DEFAULT ((0)) FOR [Cancellato]
+GO
+ALTER TABLE [dbo].[Oggetti]  WITH CHECK ADD  CONSTRAINT [FK_Oggetti_Oggetti] FOREIGN KEY([IdOggetto])
+REFERENCES [dbo].[Oggetti] ([IdOggetto])
+GO
+ALTER TABLE [dbo].[Oggetti] CHECK CONSTRAINT [FK_Oggetti_Oggetti]
+GO
+ALTER TABLE [dbo].[Oggetti]  WITH CHECK ADD  CONSTRAINT [FK_Oggetti_TipologiaOggetto] FOREIGN KEY([IdTipologiaOggetto])
+REFERENCES [dbo].[TipologiaOggetto] ([IdTipologiaOggetto])
+GO
+ALTER TABLE [dbo].[Oggetti] CHECK CONSTRAINT [FK_Oggetti_TipologiaOggetto]
+GO
+ALTER TABLE [dbo].[Prestiti]  WITH CHECK ADD  CONSTRAINT [FK_Prestiti_Impiegati] FOREIGN KEY([IdImpiegatoPrestito])
+REFERENCES [dbo].[Impiegati] ([IdImpiegato])
+GO
+ALTER TABLE [dbo].[Prestiti] CHECK CONSTRAINT [FK_Prestiti_Impiegati]
+GO
+ALTER TABLE [dbo].[Prestiti]  WITH CHECK ADD  CONSTRAINT [FK_Prestiti_Impiegati1] FOREIGN KEY([IdImpiegatoRestituzione])
+REFERENCES [dbo].[Impiegati] ([IdImpiegato])
+GO
+ALTER TABLE [dbo].[Prestiti] CHECK CONSTRAINT [FK_Prestiti_Impiegati1]
+GO
+ALTER TABLE [dbo].[Prestiti]  WITH CHECK ADD  CONSTRAINT [FK_Prestiti_Oggetti] FOREIGN KEY([IdOggetto])
+REFERENCES [dbo].[Oggetti] ([IdOggetto])
+GO
+ALTER TABLE [dbo].[Prestiti] CHECK CONSTRAINT [FK_Prestiti_Oggetti]
+GO
+ALTER TABLE [dbo].[Prestiti]  WITH CHECK ADD  CONSTRAINT [FK_Prestiti_Prestiti] FOREIGN KEY([IdPrestito])
+REFERENCES [dbo].[Prestiti] ([IdPrestito])
+GO
+ALTER TABLE [dbo].[Prestiti] CHECK CONSTRAINT [FK_Prestiti_Prestiti]
+GO
+ALTER TABLE [dbo].[Prestiti]  WITH CHECK ADD  CONSTRAINT [FK_Prestiti_Utenti] FOREIGN KEY([IdUtente])
+REFERENCES [dbo].[Utenti] ([IdUtente])
+GO
+ALTER TABLE [dbo].[Prestiti] CHECK CONSTRAINT [FK_Prestiti_Utenti]
+GO
