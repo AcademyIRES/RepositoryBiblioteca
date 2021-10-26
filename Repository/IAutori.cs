@@ -7,7 +7,7 @@ using RepositoryBiblioteca.Model;
 
 namespace RepositoryBiblioteca.Repository
 {
-    public interface IAutore
+    public interface IAutori
     {
         Autore GetAutore(int idAutore);
 

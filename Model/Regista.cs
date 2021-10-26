@@ -8,5 +8,6 @@ namespace RepositoryBiblioteca.Model
 {
     public class Regista : Creatore
     {
+
     }
 }

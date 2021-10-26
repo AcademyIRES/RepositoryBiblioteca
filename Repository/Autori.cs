@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace RepositoryBiblioteca.Repository
 {
-    public class Autori : IAutore
+    public class Autori : IAutori
     {
         public int CreateAutore(Autore autore)
         {
@@ -43,7 +43,8 @@ namespace RepositoryBiblioteca.Repository
                 using var connection = new SqlConnection(Connection.GetConnection());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Autore]
-                 SET Cancellato = 1";
+                 SET Cancellato = 1
+                   WHERE [IdAutore] = @IdAutore";
                 using var command = new SqlCommand(sql, connection);
                 command.ExecuteNonQuery();
                 return true;
@@ -67,7 +68,7 @@ namespace RepositoryBiblioteca.Repository
                                       ,[Nazionalità]
                                       ,[Cancellato]
                                   FROM [dbo].[Autore]
-                   WHERE [IdCategoria] = @IdCategoria";
+                   WHERE [IdAutore] = @IdAutore";
                 using var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@IdAutore", idAutore);
                 using var datareader = command.ExecuteReader();
@@ -82,25 +83,72 @@ namespace RepositoryBiblioteca.Repository
                         Nome = datareader["Nome"].ToString(),
                         Cognome = datareader["Cognome"].ToString(),
                         Nazionalità= datareader["Nazionalità"].ToString(),
+                        
 
                     };
                 }
             }
             catch (Exception error)
             {
-                LogError.Write(error.Message, "Autore", "GetAutore");
+                LogError.Write(error.Message, "Autori", "GetAutore");
                 return null;
             }
         }
 
         public IEnumerable<Autore> GetAutori()
         {
-            throw new NotImplementedException();
+            using var connection = new SqlConnection(Connection.GetConnection());
+            connection.Open();
+            var sql = @"SELECT [IdAutore]
+                              ,[Nome]
+                              ,[Cognome]
+                              ,[Nazionalità]
+                              ,[Cancellato]
+                          FROM [dbo].[Autore]";
+            using var command = new SqlCommand(sql, connection);
+            using var datareader = command.ExecuteReader();
+            if (datareader.HasRows)
+            {
+                while (datareader.Read())
+                {
+                    yield return new Autore
+                    {
+                        Id = Convert.ToInt32(datareader["IdAutore"]),
+                        Nome = datareader["Nome"].ToString(),
+                        Cognome = datareader["Cognome"].ToString(),
+                        Nazionalità = datareader["Nazionalità"].ToString(),
+                    };
+                }
+            }
         }
 
         public bool UpdateAutore(Autore autore)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var connection = new SqlConnection(Connection.GetConnection());
+                connection.Open();
+                var sql = @"UPDATE [dbo].[Autore]
+                           SET [Nome] = @Nome
+                              ,[Cognome] = @Cognome
+                              ,[Nazionalità] = @Nazionalità
+                              ,[Cancellato] = @Cancellato
+                             WHERE [IdAutore] = @IdAutore";
+                using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@Cancellato", autore.Cancellato);
+                command.Parameters.AddWithValue("@Nome", autore.Nome);
+                command.Parameters.AddWithValue("@IdAutore", autore.Id);
+                command.Parameters.AddWithValue("@Cognome", autore.Cognome);
+                command.Parameters.AddWithValue("@Nazionalità", autore.Nazionalità);
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                LogError.Write(Ex.Message, "Autori", "UpdateAutore");
+                return false;
+            }
         }
     }
 }
+   

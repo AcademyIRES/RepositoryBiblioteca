@@ -39,7 +39,8 @@ namespace RepositoryBiblioteca.Repository
                 using var connection = new SqlConnection(Connection.GetConnection());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Categorie]
-                 SET Cancellato = 1";
+                 SET Cancellato = 1
+                 WHERE [IdCategoria] = @IdCategoria";
                 using var command = new SqlCommand(sql, connection);
                 command.ExecuteNonQuery();
                 return true;
@@ -83,8 +84,6 @@ namespace RepositoryBiblioteca.Repository
                 LogError.Write(error.Message, "Categoria", "GetCategoria");
                 return null;
             }
-              
-
         }
 
         public IEnumerable<Categoria> GetCategorie()
@@ -131,7 +130,7 @@ namespace RepositoryBiblioteca.Repository
             }
             catch (Exception Ex)
             {
-                LogError.Write(Ex.Message, "Categoria", "DeleteCategoria");
+                LogError.Write(Ex.Message, "Categoria", "UpdateCategoria");
                 return false;
             }
         }

@@ -13,6 +13,7 @@ namespace RepositoryBiblioteca.Model
         public DateTime DataUscita { get; set; }
         public Categoria Categoria { get; set; }
         public CasaProduzione CasaProduzione { get; set; }
+        public bool Cancellato { get; set; }
 
 
     }
