@@ -17,11 +17,11 @@ namespace RepositoryBiblioteca.Repository
                 using var connection = new SqlConnection(Connection.GetConnection());
                 connection.Open();
                 var sql = @" INSERT INTO [dbo].[Impiegati]
-                                           ([Nome])
-                                           ,([Cognome])
+                                                ([Nome])
+                                               ,([Cognome])
                                      VALUES
-                                           (@Nome)
-                                           ,(@Cognome)
+                                               (@Nome)
+                                              ,(@Cognome)
                                 SELECT SCOPE_IDENTITY();";
                 using var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@Nome", impiegato.Nome);
@@ -31,7 +31,7 @@ namespace RepositoryBiblioteca.Repository
             }
             catch (Exception error)
             {
-                LogError.Write(error.Message, "UImpiegato", "CreateImpiegato");
+                LogError.Write(error.Message, "Impiegati", "CreateImpiegato");
                 return -1;
             }
         }
@@ -65,13 +65,14 @@ namespace RepositoryBiblioteca.Repository
                 var sql = @"SELECT [IdImpiegato]
                                 ,[Nome]
                                 ,[Cognome]
+                                ,[Cancellato]
                             FROM [dbo].[Impiegati]
                    WHERE [IdImpiegato] = @IdImpiegato";
                 using var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@IdImpiegato", idImpiegato);
                 using var datareader = command.ExecuteReader();
                 if (!datareader.HasRows)
-                    throw new Exception($"Nessuna categoria trovata per l'Id richiesto {idImpiegato}");
+                    throw new Exception($"Nessun impiegato trovato per l'Id richiesto {idImpiegato}");
 
                 datareader.Read();
                 {
@@ -95,10 +96,12 @@ namespace RepositoryBiblioteca.Repository
         {
             using var connection = new SqlConnection(Connection.GetConnection());
             connection.Open();
-            var sql = @"SELECT    [Nome]
+            var sql = @"SELECT    [IdImpiegato] 
+                                 ,[Nome]
                                  ,[Cognome]
+                                 ,[Cancellato]
                                 FROM [dbo].[Impiegati]
-                           WHERE [IdImpiegato] = @IdImpiegato";
+                                        ";
             using var command = new SqlCommand(sql, connection);
             using var datareader = command.ExecuteReader();
             if (datareader.HasRows)
@@ -110,6 +113,7 @@ namespace RepositoryBiblioteca.Repository
                         Id = Convert.ToInt32(datareader["IdImpiegato"]),
                         Nome = datareader["Nome"].ToString(),
                         Cognome = datareader["Cognome"].ToString(),
+                        Cancellato = Convert.ToBoolean(datareader["Cancellato"]),
 
                     };
                 }
@@ -128,13 +132,17 @@ namespace RepositoryBiblioteca.Repository
                                   ,[Cancellato] = @Cancellato
                              WHERE [idImpiegato] = @IdImpiegato";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@Cancellato", impiegato.Cancellato);
+                command.Parameters.AddWithValue("@Nome", impiegato.Nome);
+                command.Parameters.AddWithValue("@Cognome", impiegato.Cognome);
+                command.Parameters.AddWithValue("@IdImpiegato", impiegato.Id);
                 command.ExecuteNonQuery();
                 return true;
 
             }
             catch (Exception error)
             {
-                LogError.Write(error.Message, "Impiegato", "UpdateImpiegato");
+                LogError.Write(error.Message, "Impiegati", "UpdateImpiegato");
                 return false;
             }
 

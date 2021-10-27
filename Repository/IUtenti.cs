@@ -10,12 +10,9 @@ namespace RepositoryBiblioteca.Repository
     public interface IUtenti
     {
         Utente GetUtente(int idUtente);
-
         IEnumerable<Utente> GetUtenti();
-
         int CreateUtente(Utente utente);
         bool UpdateUtente(Utente utente);
-
         bool DeleteUtente(int idUtente);
 
     }

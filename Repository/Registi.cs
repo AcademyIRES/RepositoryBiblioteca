@@ -75,13 +75,13 @@ namespace RepositoryBiblioteca.Repository
                 command.Parameters.AddWithValue("@IdRegista", idRegista);
                 using var datareader = command.ExecuteReader();
                 if (!datareader.HasRows) 
-                    throw new Exception($"Nessuna categoria trovata per l'Id richiesto {idRegista}");
+                    throw new Exception($"Nessun regista trovato per l'Id richiesto {idRegista}");
 
                 datareader.Read();
                 {
                     return new Regista
                     {
-                       Id = Convert.ToInt32(datareader["idRegista"]),
+                       Id = Convert.ToInt32(datareader["IdRegista"]),
                        Nome = datareader["Nome"].ToString(),
                        Cognome = datareader["Cognome"].ToString(),
                        Nazionalità = datareader["Nazionalità"].ToString(),
@@ -105,12 +105,12 @@ namespace RepositoryBiblioteca.Repository
                                   ,[Nazionalità]
                                   ,[Cancellato]
                               FROM [dbo].[Regista]
-                   WHERE [IdRegista] = @IdRegista";
+                                        ";
                 using var command = new SqlCommand(sql, connection);
                 
                 using var datareader = command.ExecuteReader();
                 if (!datareader.HasRows)
-                    throw new Exception($"Nessuna categoria trovata");
+                    throw new Exception($"Nessun regista trovato");
                
                 while (datareader.Read())
                

@@ -31,7 +31,7 @@ namespace RepositoryBiblioteca.Repository
             }
             catch (Exception error)
             {
-                LogError.Write(error.Message, "Autore", "CreateAutore");
+                LogError.Write(error.Message, "Autori", "CreateAutore");
                 return -1;
             }
         }
@@ -43,15 +43,15 @@ namespace RepositoryBiblioteca.Repository
                 using var connection = new SqlConnection(Connection.GetConnection());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Autore]
-                 SET Cancellato = 1
-                   WHERE [IdAutore] = @IdAutore";
+                                     SET Cancellato = 1
+                                   WHERE [IdAutore] = @IdAutore";
                 using var command = new SqlCommand(sql, connection);
                 command.ExecuteNonQuery();
                 return true;
             }
             catch (Exception Ex)
             {
-                LogError.Write(Ex.Message, "Autore", "DeleteAutore");
+                LogError.Write(Ex.Message, "Autori", "DeleteAutore");
                 return false;
             };
         }
@@ -68,12 +68,12 @@ namespace RepositoryBiblioteca.Repository
                                       ,[Nazionalità]
                                       ,[Cancellato]
                                   FROM [dbo].[Autore]
-                   WHERE [IdAutore] = @IdAutore";
+                              WHERE [IdAutore] = @IdAutore";
                 using var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@IdAutore", idAutore);
                 using var datareader = command.ExecuteReader();
                 if (!datareader.HasRows)
-                    throw new Exception($"Nessuna categoria trovata per l'Id richiesto {idAutore}");
+                    throw new Exception($"Nessun autore trovato per l'Id richiesto {idAutore}");
 
                 datareader.Read();
                 {
@@ -83,8 +83,7 @@ namespace RepositoryBiblioteca.Repository
                         Nome = datareader["Nome"].ToString(),
                         Cognome = datareader["Cognome"].ToString(),
                         Nazionalità= datareader["Nazionalità"].ToString(),
-                        
-
+                        Cancellato = Convert.ToBoolean(datareader["Cancellato"]),
                     };
                 }
             }
@@ -117,6 +116,7 @@ namespace RepositoryBiblioteca.Repository
                         Nome = datareader["Nome"].ToString(),
                         Cognome = datareader["Cognome"].ToString(),
                         Nazionalità = datareader["Nazionalità"].ToString(),
+                        Cancellato = Convert.ToBoolean(datareader["Cancellato"]),
                     };
                 }
             }

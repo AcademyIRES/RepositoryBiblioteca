@@ -74,11 +74,11 @@ namespace RepositoryBiblioteca.Repository
                               FROM [dbo].[Utenti]
                    WHERE [IdUtente] = @IdUtente";
                 using var command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@IdAutore", idUtente);               
+                command.Parameters.AddWithValue("@IdUtente", idUtente);               
                 
                 using var datareader = command.ExecuteReader();
                 if (!datareader.HasRows)
-                    throw new Exception($"Nessuna categoria trovata per l'Id richiesto {idUtente}");
+                    throw new Exception($"Nessun utente trovata per l'Id richiesto {idUtente}");
 
                 datareader.Read();
                 {
@@ -109,7 +109,7 @@ namespace RepositoryBiblioteca.Repository
                                   ,[NumTelefono]
                                   ,[Cancellato]
                               FROM [dbo].[Utenti]
-                   WHERE [IdUtente] = @IdUtente";
+                                             ";
             using var command = new SqlCommand(sql, connection);
             using var datareader = command.ExecuteReader();
             if (datareader.HasRows)
@@ -140,6 +140,10 @@ namespace RepositoryBiblioteca.Repository
                                   ,[Cancellato] = @Cancellato
                              WHERE [idUtente] = @IdUtente";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@Cancellato", utente.Cancellato);
+                command.Parameters.AddWithValue("@Nome", utente.Nome);
+                command.Parameters.AddWithValue("@Cognome", utente.Cognome);
+                command.Parameters.AddWithValue("@NumTelefono", utente.NumTelefono);
                 command.ExecuteNonQuery();
                 return true;
 

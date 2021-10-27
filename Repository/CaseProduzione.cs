@@ -36,25 +36,25 @@ namespace RepositoryBiblioteca.Repository
             }
         }
 
-        //public bool DeleteCasaProduzione(int idCasaProduzione)
-        //{
-        //    try
-        //    {
-        //        using var connection = new SqlConnection(Connection.GetConnection());
-        //        connection.Open();
-        //        var sql = @"UPDATE [dbo].[CasaProduzione]
-        //                             SET Cancellato = 1
-        //                             WHERE [IdCasaProduzione] = @IdCasaProduzione";
-        //        using var command = new SqlCommand(sql, connection);
-        //        command.ExecuteNonQuery();
-        //        return true;
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        LogError.Write(Ex.Message, "CaseProduzione", "DeleteCasaProduzione");
-        //        return false;
-        //    }
-        //}
+        public bool DeleteCasaProduzione(int idCasaProduzione)
+        {
+            try
+            {
+                using var connection = new SqlConnection(Connection.GetConnection());
+                connection.Open();
+                var sql = @"UPDATE [dbo].[CasaProduzione]
+                                     SET Cancellato = 1
+                                     WHERE [IdCasaProduzione] = @IdCasaProduzione";
+                using var command = new SqlCommand(sql, connection);
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                LogError.Write(Ex.Message, "CaseProduzione", "DeleteCasaProduzione");
+                return false;
+            }
+        }
 
         public CasaProduzione GetCasaProduzione(int idCasaProduzione)
         {
@@ -73,7 +73,7 @@ namespace RepositoryBiblioteca.Repository
                 command.Parameters.AddWithValue("@IdCasaProduzione", idCasaProduzione);
                 using var datareader = command.ExecuteReader();
                 if (!datareader.HasRows)
-                    throw new Exception($"Nessuna categoria trovata per l'Id richiesto {idCasaProduzione}");
+                    throw new Exception($"Nessuna casa di produzione trovata per l'Id richiesto {idCasaProduzione}");
 
                 datareader.Read();
                 {
@@ -81,7 +81,8 @@ namespace RepositoryBiblioteca.Repository
                     {
                         IdCasaProduzione = Convert.ToInt32(datareader["IdCasaProduzione"]),
                         Nome = datareader["Nome"].ToString(),
-                        Nazionalità = datareader["Nazionalità"].ToString()
+                        Nazionalità = datareader["Nazionalità"].ToString(),
+                        Cancellato = Convert.ToBoolean(datareader["Cancellato"]),
                     };
                 }
             }
@@ -103,7 +104,7 @@ namespace RepositoryBiblioteca.Repository
                                   ,[Nazionalità]
                                   ,[Cancellato]
                               FROM [dbo].[CasaProduzione]
-                   WHERE [IdCasaProduzione] = @IdCasaProduzione";
+                                        ";
             using var command = new SqlCommand(sql, connection);
             using var datareader = command.ExecuteReader();
             if (datareader.HasRows)
@@ -114,7 +115,8 @@ namespace RepositoryBiblioteca.Repository
                     {
                         IdCasaProduzione = Convert.ToInt32(datareader["IdCasaProduzione"]),
                         Nome = datareader["Nome"].ToString(),
-                        Nazionalità = datareader["Nazionalità"].ToString()
+                        Nazionalità = datareader["Nazionalità"].ToString(),
+                        Cancellato = Convert.ToBoolean(datareader["Cancellato"]),
                     };
                 }
             }

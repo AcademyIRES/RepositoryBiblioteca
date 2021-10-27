@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RepositoryBiblioteca.Model;
-using System.Data.SqlClient;
 
 namespace RepositoryBiblioteca.Repository
 {

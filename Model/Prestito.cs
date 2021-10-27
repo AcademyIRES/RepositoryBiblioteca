@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RepositoryBiblioteca.Model
 {
-    public class Prestito
+    public class Prestito<T> where T:Oggetto
     {
         public int IdPrestito { get; set; }
         public DateTime DataInizio { get; set; }
@@ -14,7 +14,7 @@ namespace RepositoryBiblioteca.Model
         public Utente Utente { get; set; }
         public Impiegato ImpPrestito { get; set; }
         public Impiegato ImpRestituzione { get; set; }
-        public Oggetto Oggetto { get; set; }
+        public T Oggetto { get; set; }
 
     }
 }
