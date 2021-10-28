@@ -18,10 +18,11 @@ namespace RepositoryBiblioteca.Repository
                 using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Oggetti]
-                                SET Cancellato = 1
-                 WHERE [IdOggetto] = @IdOggetto
-                        AND [IdTipologiaOggetto] = 3";
+                                         SET Cancellato = 1
+                                WHERE [IdOggetto] = @IdOggetto
+                                AND [IdTipologiaOggetto] = 3";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@IdOggetto", idRivista);
                 command.ExecuteNonQuery();
                 return true;
             }
@@ -165,11 +166,12 @@ namespace RepositoryBiblioteca.Repository
                                   ,[IdCasaProduzione] = @IdCasaProduzione
                                   ,[DataUscita] = @DataUscita
                                   ,[Cancellato] = @Cancellato
-                      WHERE [IdOggetti] = @IdOggetti
+                      WHERE [IdOggetto] = @IdOggetto
                             AND [IdTipologiaOggetto]=3";
                 using var command = new SqlCommand(sql, connection);
                 var categorie = new Categorie();
                 var casaProduzione = new CaseProduzione();
+                command.Parameters.AddWithValue("@IdOggetto", rivista.IdOggetto);
                 command.Parameters.AddWithValue("@Titolo", rivista.Titolo);
                 command.Parameters.AddWithValue("@IdCategoria", rivista.Categoria.IdCategoria);
                 command.Parameters.AddWithValue("@IdCasaProduzione", rivista.CasaProduzione.IdCasaProduzione);

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RepositoryBiblioteca.Model;
 using System.Data.SqlClient;
 
@@ -18,9 +15,10 @@ namespace RepositoryBiblioteca.Repository
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Oggetti]
                                 SET Cancellato = 1
-                 WHERE [IdOggetto] = @IdOggetto
+                            WHERE [IdOggetto] = @IdOggetto
                         AND [IdTipologiaOggetto] = 2";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@IdOggetto", id);
                 command.ExecuteNonQuery();
                 return true;
             }

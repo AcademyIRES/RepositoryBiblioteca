@@ -11,7 +11,7 @@ namespace RepositoryBiblioteca.Repository
         {
             using var connection = new SqlConnection(Connection.GetConnectionString());
             connection.Open();
-            var sql = @"SELECT SELECT [IdPrestito]
+            var sql =        @"SELECT [IdPrestito]
                                       ,[DataInizio]
                                       ,[DataFine]
                                       ,[IdUtente]

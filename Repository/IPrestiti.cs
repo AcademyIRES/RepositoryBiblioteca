@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RepositoryBiblioteca.Model;
 using System.Data.SqlClient;
 
@@ -48,8 +45,6 @@ namespace RepositoryBiblioteca.Repository
                 return -1;
             }
         }
-
-       // int CreatePrestito(Prestito<T> prestito);
         Prestito<T> GetPrestito(int idPrestito);
         IEnumerable<Prestito<T>> GetPrestiti();
         bool UpdatePrestito(Prestito<T> prestito);

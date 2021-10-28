@@ -1,9 +1,6 @@
 ﻿using RepositoryBiblioteca.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 
 namespace RepositoryBiblioteca.Repository
@@ -18,17 +15,17 @@ namespace RepositoryBiblioteca.Repository
             {
                 using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
-                var sql = @"UPDATE UPDATE [dbo].[Prestiti]
+                var sql = @"UPDATE [dbo].[Prestiti]
                            SET [DataInizio] = @DataInizio
                               ,[DataFine] = @DataFine
                               ,[IdUtente] = @IdUtente
                               ,[IdImpiegatoPrestito] = @IdImpiegatoPrestito
-                              ,[IdImpiegatoRestituzione] =  @IdImpiegatoRestituzione
-                              ,[IdOggetto] = @IdOggetto
-                      WHERE [IdOggetto] = @IdOggetto
+                              ,[IdImpiegatoRestituzione] = @IdImpiegatoRestituzione
+                              WHERE [IdOggetto] = @IdOggetto
                             AND [IdPrestito]=@IdPrestito";
                 using var command = new SqlCommand(sql, connection);
-                
+                command.Parameters.AddWithValue("@IdOggetto", prestito.Oggetto.IdOggetto);
+                command.Parameters.AddWithValue("@IdPrestito", prestito.IdPrestito);
                 command.Parameters.AddWithValue("@DataInizio", prestito.DataInizio);
                 command.Parameters.AddWithValue("@DataFine", prestito.DataFine);
                 command.Parameters.AddWithValue("@IdUtente", prestito.Utente.Id);

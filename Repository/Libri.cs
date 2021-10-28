@@ -1,9 +1,6 @@
 ﻿using RepositoryBiblioteca.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 
 namespace RepositoryBiblioteca.Repository
@@ -18,9 +15,10 @@ namespace RepositoryBiblioteca.Repository
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Oggetti]
                                 SET Cancellato = 1
-                 WHERE [IdOggetto] = @IdOggetto
-                        AND [IdTipologiaOggetto] = 1";
+                         WHERE [IdOggetto] = @IdOggetto
+                                AND [IdTipologiaOggetto] = 1";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@IdOggetto", idLibro);
                 command.ExecuteNonQuery();
                 return true;
             }
@@ -181,6 +179,7 @@ namespace RepositoryBiblioteca.Repository
                 var categorie = new Categorie();
                 var autori = new Autori();
                 var casaProduzione = new CaseProduzione();
+                command.Parameters.AddWithValue("@IdOggetto", libro.IdOggetto);
                 command.Parameters.AddWithValue("@Titolo", libro.Titolo);
                 command.Parameters.AddWithValue("@IdCategoria", libro.Categoria.IdCategoria);
                 command.Parameters.AddWithValue("@IdCasaProduzione", libro.CasaProduzione.IdCasaProduzione);

@@ -6,5 +6,9 @@
         public string Nome { get; set; }
         public string Nazionalità { get; set; }
         public bool Cancellato { get; set; }
+        //public CasaProduzione(string nome,string nazionalità)
+        //{
+
+        //}
     }
 }

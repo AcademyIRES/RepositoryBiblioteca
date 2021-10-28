@@ -48,6 +48,7 @@ namespace RepositoryBiblioteca.Repository
                                SET Cancellato = 1;
                              WHERE [idUtente] = @IdUtente";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@IdUtente", idUtente);
                 command.ExecuteNonQuery();
                 return true;               
                
@@ -140,6 +141,7 @@ namespace RepositoryBiblioteca.Repository
                                   ,[Cancellato] = @Cancellato
                              WHERE [idUtente] = @IdUtente";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@IdUtente", utente.Id);
                 command.Parameters.AddWithValue("@Cancellato", utente.Cancellato);
                 command.Parameters.AddWithValue("@Nome", utente.Nome);
                 command.Parameters.AddWithValue("@Cognome", utente.Cognome);

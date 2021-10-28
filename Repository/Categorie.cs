@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using RepositoryBiblioteca.Model;
 
@@ -17,9 +14,11 @@ namespace RepositoryBiblioteca.Repository
             {
                 using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
-                var sql = @"INSERT INTO [dbo].[Categorie] ([Nome])
-                 VALUES
-                      (@Nome); SELECT SCOPE_IDENTITY();";
+                var sql = @"INSERT INTO [dbo].[Categorie]
+                                                ([Nome])
+                                             VALUES
+                                                (@Nome); 
+                                SELECT SCOPE_IDENTITY();";
                 using var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@Nome", categoria.Nome);
                 return Convert.ToInt32(command.ExecuteScalar());
@@ -39,9 +38,10 @@ namespace RepositoryBiblioteca.Repository
                 using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Categorie]
-                 SET Cancellato = 1
-                 WHERE [IdCategoria] = @IdCategoria";
+                                 SET Cancellato = 1
+                                 WHERE [IdCategoria] = @IdCategoria";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@IdCategoria", idCategoria);
                 command.ExecuteNonQuery();
                 return true;
             }
@@ -59,9 +59,9 @@ namespace RepositoryBiblioteca.Repository
                 using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"SELECT [IdCategoria]
-                      ,[Nome]
-                      ,[Cancellato]
-                   FROM [dbo].[Categorie]
+                                  ,[Nome]
+                                  ,[Cancellato]
+                               FROM [dbo].[Categorie]
                    WHERE [IdCategoria] = @IdCategoria";
                 using var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@IdCategoria", idCategoria);
