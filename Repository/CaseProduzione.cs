@@ -15,7 +15,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"INSERT INTO [dbo].[CasaProduzione]
                                            ([Nome]
@@ -40,12 +40,13 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[CasaProduzione]
                                      SET Cancellato = 1
                                      WHERE [IdCasaProduzione] = @IdCasaProduzione";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@IdCasaProduzione",idCasaProduzione);
                 command.ExecuteNonQuery();
                 return true;
             }
@@ -61,7 +62,7 @@ namespace RepositoryBiblioteca.Repository
 
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"SELECT [IdCasaProduzione]
                                   ,[Nome]
@@ -97,7 +98,7 @@ namespace RepositoryBiblioteca.Repository
 
         public IEnumerable<CasaProduzione> GetCasaProduzione()
         {
-            using var connection = new SqlConnection(Connection.GetConnection());
+            using var connection = new SqlConnection(Connection.GetConnectionString());
             connection.Open();
             var sql = @"SELECT [IdCasaProduzione]
                                   ,[Nome]
@@ -123,11 +124,41 @@ namespace RepositoryBiblioteca.Repository
 
         }
 
+        public IEnumerable<CasaProduzione> GetCasaProduzione(bool deleted)
+        {
+            using var connection = new SqlConnection(Connection.GetConnectionString());
+            connection.Open();
+            var sql = @"SELECT [IdCasaProduzione]
+                                  ,[Nome]
+                                  ,[Nazionalità]
+                                  ,[Cancellato]
+                              FROM [dbo].[CasaProduzione]
+                                WHERE Cancellato = @Cancellato
+                                        ";
+            using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@Cancellato",deleted);
+            using var datareader = command.ExecuteReader();
+            if (datareader.HasRows)
+            {
+                while (datareader.Read())
+                {
+                    yield return new CasaProduzione
+                    {
+                        IdCasaProduzione = Convert.ToInt32(datareader["IdCasaProduzione"]),
+                        Nome = datareader["Nome"].ToString(),
+                        Nazionalità = datareader["Nazionalità"].ToString(),
+                        Cancellato = Convert.ToBoolean(datareader["Cancellato"]),
+                    };
+                }
+            }
+
+        }
+
         public bool UpdateCasaProduzione(CasaProduzione casaproduzione)
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[CasaProduzione]
                                SET [Nome] = @Nome,
@@ -137,7 +168,7 @@ namespace RepositoryBiblioteca.Repository
                 using var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@Cancellato", casaproduzione.Cancellato);
                 command.Parameters.AddWithValue("@Nome", casaproduzione.Nome);
-                command.Parameters.AddWithValue("@Idcasaproduzione", casaproduzione.IdCasaProduzione);
+                command.Parameters.AddWithValue("@IdCasaProduzione", casaproduzione.IdCasaProduzione);
                 command.Parameters.AddWithValue("@Nazionalità", casaproduzione.Nazionalità);
                 command.ExecuteNonQuery();
                 return true;

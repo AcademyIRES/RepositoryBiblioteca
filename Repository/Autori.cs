@@ -1,9 +1,6 @@
 ﻿using RepositoryBiblioteca.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 
 namespace RepositoryBiblioteca.Repository
@@ -14,7 +11,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"INSERT INTO [dbo].[Autore]
                                        ([Nome]
@@ -24,9 +21,9 @@ namespace RepositoryBiblioteca.Repository
                                         (@Cognome),
                                         (@Nazionalità); SELECT SCOPE_IDENTITY()";
                 using var command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@Nome", autore.Nome); 
-                command.Parameters.AddWithValue("@Cognome", autore.Cognome);
-                command.Parameters.AddWithValue("@Nazionalità",autore.Nazionalità);
+                    command.Parameters.AddWithValue("@Nome", autore.Nome); 
+                    command.Parameters.AddWithValue("@Cognome", autore.Cognome);
+                    command.Parameters.AddWithValue("@Nazionalità",autore.Nazionalità);
                 return Convert.ToInt32(command.ExecuteScalar());
             }
             catch (Exception error)
@@ -40,12 +37,13 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Autore]
                                      SET Cancellato = 1
                                    WHERE [IdAutore] = @IdAutore";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@IdAutore",idAutore);
                 command.ExecuteNonQuery();
                 return true;
             }
@@ -60,7 +58,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"SELECT [IdAutore]
                                       ,[Nome]
@@ -96,7 +94,7 @@ namespace RepositoryBiblioteca.Repository
 
         public IEnumerable<Autore> GetAutori()
         {
-            using var connection = new SqlConnection(Connection.GetConnection());
+            using var connection = new SqlConnection(Connection.GetConnectionString());
             connection.Open();
             var sql = @"SELECT [IdAutore]
                               ,[Nome]
@@ -122,11 +120,40 @@ namespace RepositoryBiblioteca.Repository
             }
         }
 
+        public IEnumerable<Autore> GetAutoriByState(bool deleted)
+        {
+            using var connection = new SqlConnection(Connection.GetConnectionString());
+            connection.Open();
+            var sql = @"SELECT [IdAutore]
+                              ,[Nome]
+                              ,[Cognome]
+                              ,[Nazionalità]
+                              ,[Cancellato]
+                          FROM [dbo].[Autore] where Cancellato=@Cancellato";
+            using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@Cancellato",deleted);
+            using var datareader = command.ExecuteReader();
+            if (datareader.HasRows)
+            {
+                while (datareader.Read())
+                {
+                    yield return new Autore
+                    {
+                        Id = Convert.ToInt32(datareader["IdAutore"]),
+                        Nome = datareader["Nome"].ToString(),
+                        Cognome = datareader["Cognome"].ToString(),
+                        Nazionalità = datareader["Nazionalità"].ToString(),
+                        Cancellato = Convert.ToBoolean(datareader["Cancellato"]),
+                    };
+                }
+            }
+        }
+
         public bool UpdateAutore(Autore autore)
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Autore]
                            SET [Nome] = @Nome

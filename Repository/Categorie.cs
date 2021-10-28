@@ -15,7 +15,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"INSERT INTO [dbo].[Categorie] ([Nome])
                  VALUES
@@ -36,7 +36,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Categorie]
                  SET Cancellato = 1
@@ -56,7 +56,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"SELECT [IdCategoria]
                       ,[Nome]
@@ -88,7 +88,7 @@ namespace RepositoryBiblioteca.Repository
 
         public IEnumerable<Categoria> GetCategorie()
         {
-            using var connection = new SqlConnection(Connection.GetConnection());
+            using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"SELECT [IdCategoria]
                       ,[Nome]
@@ -115,7 +115,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Categorie]
                  SET Cancellato = @Cancellato,

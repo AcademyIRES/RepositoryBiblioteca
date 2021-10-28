@@ -14,7 +14,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @" INSERT INTO [dbo].[Impiegati]
                                                 ([Nome])
@@ -40,12 +40,13 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Impiegati]
                            SET Cancellato = 1
                  WHERE [IdImpiegato] = @IdImpiegato";
                 using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@IdImpiegato", idImpiegato);
                 command.ExecuteNonQuery();
                 return true;
             }
@@ -60,7 +61,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"SELECT [IdImpiegato]
                                 ,[Nome]
@@ -94,7 +95,7 @@ namespace RepositoryBiblioteca.Repository
 
         public IEnumerable<Impiegato> GetImpiegato()
         {
-            using var connection = new SqlConnection(Connection.GetConnection());
+            using var connection = new SqlConnection(Connection.GetConnectionString());
             connection.Open();
             var sql = @"SELECT    [IdImpiegato] 
                                  ,[Nome]
@@ -124,7 +125,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Impiegati]
                                SET [Nome] = @Nome

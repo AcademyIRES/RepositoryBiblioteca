@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace RepositoryBiblioteca.Model
+﻿namespace RepositoryBiblioteca.Model
 {
     public class Utente : Persona
     {
         public string NumTelefono { get; set; }
-
     }
 }

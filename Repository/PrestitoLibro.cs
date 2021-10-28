@@ -10,7 +10,7 @@ namespace RepositoryBiblioteca.Repository
         public override IEnumerable<Prestito<Libro>> GetPrestiti()
         {
 
-            using var connection = new SqlConnection(Connection.GetConnection());
+            using var connection = new SqlConnection(Connection.GetConnectionString());
             connection.Open();
             var sql = @"SELECT SELECT [IdPrestito]
                                       ,[DataInizio]
@@ -51,7 +51,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"SELECT [IdPrestito]
                                       ,[DataInizio]

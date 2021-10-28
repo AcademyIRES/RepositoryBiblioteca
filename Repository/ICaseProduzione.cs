@@ -14,6 +14,6 @@ namespace RepositoryBiblioteca.Repository
         IEnumerable<CasaProduzione> GetCasaProduzione();
         int CreateCasaProduzione(CasaProduzione casaproduzione);
         bool UpdateCasaProduzione(CasaProduzione casaproduzione);
-       // bool DeleteCasaProduzione(int idCasaProduzione);
+        IEnumerable<CasaProduzione> GetCasaProduzione(bool deleted);
     }
 }

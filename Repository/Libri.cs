@@ -14,7 +14,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Oggetti]
                                 SET Cancellato = 1
@@ -33,7 +33,7 @@ namespace RepositoryBiblioteca.Repository
 
         public IEnumerable<Libro> Get()
         {
-            using var connection = new SqlConnection(Connection.GetConnection());
+            using var connection = new SqlConnection(Connection.GetConnectionString());
             connection.Open();
             var sql = @"SELECT [IdOggetto]
                                 ,[Titolo]
@@ -73,7 +73,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"SELECT [IdOggetto]
                                   ,[Titolo]
@@ -122,7 +122,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @" INSERT INTO [dbo].[Oggetti]
                             (
@@ -165,7 +165,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"UPDATE [dbo].[Oggetti]
                                SET [Titolo] = @Titolo

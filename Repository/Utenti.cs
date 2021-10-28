@@ -14,7 +14,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @" INSERT INTO [dbo].[Utenti]
                                ([Nome]
@@ -42,7 +42,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @" UPDATE [dbo].[Utenti]
                                SET Cancellato = 1;
@@ -64,7 +64,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @"SELECT [IdUtente]
                                   ,[Nome]
@@ -101,7 +101,7 @@ namespace RepositoryBiblioteca.Repository
 
         public IEnumerable<Utente> GetUtenti()
         {
-            using var connection = new SqlConnection(Connection.GetConnection());
+            using var connection = new SqlConnection(Connection.GetConnectionString());
             connection.Open();
             var sql = @"SELECT [IdUtente]
                                   ,[Nome]
@@ -131,7 +131,7 @@ namespace RepositoryBiblioteca.Repository
         {
             try
             {
-                using var connection = new SqlConnection(Connection.GetConnection());
+                using var connection = new SqlConnection(Connection.GetConnectionString());
                 connection.Open();
                 var sql = @" UPDATE [dbo].[Utenti]
                              SET [Nome] = @Nome

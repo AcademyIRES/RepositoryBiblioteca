@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using RepositoryBiblioteca.Model;
 
 namespace RepositoryBiblioteca.Repository
@@ -18,5 +14,7 @@ namespace RepositoryBiblioteca.Repository
         bool UpdateAutore(Autore autore);
 
         bool DeleteAutore(int idAutore);
+
+        IEnumerable<Autore> GetAutoriByState(bool deleted);
     }
 }
